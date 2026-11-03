@@ -1,4 +1,4 @@
-# ms-foro — Sistema de Foros en Línea
+# microservicio-foro — Sistema de Foros en Línea
 
 Microservicio para la **búsqueda, visualización, publicación y comentarios de temas** del foro. Incluye además la **moderación** (banear y desbanear temas o comentarios).
 Desarrollo Full Stack III (DSY2205) — Experiencia 1, Sumativa "Programando nuestro BackEnd".
