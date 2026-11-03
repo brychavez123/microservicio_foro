@@ -98,6 +98,3 @@ PUT /api/temas/3/banear
 ```
 
 Códigos de respuesta: `200`, `201`, `400` (validación), `401`, `403` (rol sin permiso o no eres el autor), `404`, `409` (conflicto, por ejemplo eliminar una categoría que tiene temas).
-
-## Postman
-Importa [`postman/ms-foro.postman_collection.json`](postman/ms-foro.postman_collection.json). Tiene 34 peticiones organizadas en carpetas, con las credenciales de cada rol como variables y tests del código de estado. Los ids de ejemplo (7 para una categoría nueva, 6 para un tema o comentario nuevo) suponen que la base se acaba de crear con los scripts.
