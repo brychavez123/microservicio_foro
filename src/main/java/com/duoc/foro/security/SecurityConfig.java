@@ -29,7 +29,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * Roles:
  * - Público (sin login): ver y buscar categorías, temas y comentarios.
  * - USUARIO: publicar temas y comentar; editar/eliminar lo propio.
- * - MODERADOR: además banear/desbanear temas y comentarios y ver lo baneado.
+ * - MODERADOR: además ver temas y comentarios baneados (banear/desbanear se hace en ms-moderacion).
  * - ADMIN: todo lo anterior + gestionar categorías y editar/eliminar cualquier publicación.
  */
 @Configuration
@@ -43,14 +43,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/actuator/health", "/error").permitAll()
-                        // Moderación
-                        .requestMatchers(HttpMethod.GET, "/api/temas/baneados", "/api/comentarios/baneados")
-                        .hasAnyRole("ADMIN", "MODERADOR")
-                        .requestMatchers(HttpMethod.PUT,
-                                "/api/temas/*/banear", "/api/temas/*/desbanear",
-                                "/api/comentarios/*/banear", "/api/comentarios/*/desbanear")
-                        .hasAnyRole("ADMIN", "MODERADOR")
+                        .requestMatchers("/actuator/health", "/api/info", "/error").permitAll()
                         // Gestión de categorías
                         .requestMatchers(HttpMethod.POST, "/api/categorias/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/categorias/**").hasRole("ADMIN")

@@ -46,12 +46,6 @@ public class ComentarioService {
         return ComentarioResponse.from(comentario);
     }
 
-    @Transactional(readOnly = true)
-    public List<ComentarioResponse> listarBaneados() {
-        return comentarioRepository.findByEstadoOrderByFechaDesc(EstadoPublicacion.BANEADO).stream()
-                .map(ComentarioResponse::from).toList();
-    }
-
     @Transactional
     public ComentarioResponse crear(Long temaId, ComentarioRequest request, Authentication auth) {
         Tema tema = temaService.buscarVisible(temaId, auth);
@@ -88,30 +82,6 @@ public class ComentarioService {
                 "Solo el autor o un ADMIN pueden eliminar este comentario");
         comentarioRepository.delete(comentario);
         log.info("Comentario eliminado: id={}", id);
-    }
-
-    @Transactional
-    public ComentarioResponse banear(Long id, String motivo, Authentication auth) {
-        Comentario comentario = buscarPorId(id);
-        if (comentario.getEstado() == EstadoPublicacion.BANEADO) {
-            throw new ConflictoException("El comentario con id " + id + " ya está baneado");
-        }
-        comentario.setEstado(EstadoPublicacion.BANEADO);
-        comentario.setMotivoBaneo(motivo.trim());
-        log.warn("Comentario baneado: id={}, por={}, motivo={}", id, auth.getName(), motivo);
-        return ComentarioResponse.from(comentarioRepository.save(comentario));
-    }
-
-    @Transactional
-    public ComentarioResponse desbanear(Long id, Authentication auth) {
-        Comentario comentario = buscarPorId(id);
-        if (comentario.getEstado() == EstadoPublicacion.ACTIVO) {
-            throw new ConflictoException("El comentario con id " + id + " no está baneado");
-        }
-        comentario.setEstado(EstadoPublicacion.ACTIVO);
-        comentario.setMotivoBaneo(null);
-        log.info("Comentario desbaneado: id={}, por={}", id, auth.getName());
-        return ComentarioResponse.from(comentarioRepository.save(comentario));
     }
 
     private Comentario buscarPorId(Long id) {

@@ -1,6 +1,7 @@
 # microservicio-foro — Sistema de Foros en Línea
 
-Microservicio para la **búsqueda, visualización, publicación y comentarios de temas** del foro. Incluye además la **moderación** (banear y desbanear temas o comentarios).
+Microservicio para la **búsqueda, visualización, publicación y comentarios de temas** del foro.
+La moderación (banear y desbanear) vive ahora en su propio microservicio, **ms-moderacion**.
 Desarrollo Full Stack III (DSY2205) — Experiencia 1, Sumativa "Programando nuestro BackEnd".
 
 Trabaja junto a [ms-usuarios](https://github.com/brychavez123/microservicio_usuario.git): comparten la base de datos Oracle, así que los mismos usuarios y contraseñas sirven en ambos.
@@ -37,7 +38,7 @@ ROL 1───* USUARIO 1───* TEMA *───1 CATEGORIA
 |-----|-------------|
 | Público (sin login) | Ver y buscar categorías, temas y comentarios activos |
 | **USUARIO** | Publicar temas y comentar; editar o eliminar sus propias publicaciones |
-| **MODERADOR** | Lo anterior + banear y desbanear temas y comentarios, y ver lo baneado |
+| **MODERADOR** | Lo anterior + ver temas y comentarios baneados (banear y desbanear se hace en ms-moderacion) |
 | **ADMIN** | Todo lo anterior + gestionar categorías y editar o eliminar cualquier publicación |
 
 ## Base de datos
@@ -75,8 +76,6 @@ Autenticación: **Basic Auth** (usuario = email).
 | GET | `/api/temas/usuario/{id}` | Público |
 | POST | `/api/temas` | Autenticado (el autor es el usuario logueado) |
 | PUT / DELETE | `/api/temas/{id}` | Autor / ADMIN |
-| GET | `/api/temas/baneados` | MODERADOR / ADMIN |
-| PUT | `/api/temas/{id}/banear` · `/desbanear` | MODERADOR / ADMIN |
 
 ### Comentarios
 | Método | Endpoint | Acceso |
@@ -85,16 +84,18 @@ Autenticación: **Basic Auth** (usuario = email).
 | POST | `/api/temas/{id}/comentarios` | Autenticado |
 | GET | `/api/comentarios/{id}` | Público |
 | PUT / DELETE | `/api/comentarios/{id}` | Autor / ADMIN |
-| GET | `/api/comentarios/baneados` | MODERADOR / ADMIN |
-| PUT | `/api/comentarios/{id}/banear` · `/desbanear` | MODERADOR / ADMIN |
 
 Ejemplos:
 ```json
 POST /api/temas
 { "titulo": "¿Qué teclado mecánico recomiendan?", "contenido": "Busco uno para programar.", "categoriaId": 1 }
-
-PUT /api/temas/3/banear
-{ "motivo": "Incumple las normas del foro" }
 ```
 
 Códigos de respuesta: `200`, `201`, `400` (validación), `401`, `403` (rol sin permiso o no eres el autor), `404`, `409` (conflicto, por ejemplo eliminar una categoría que tiene temas).
+
+## Docker
+```bash
+docker build -t ms-foro .
+docker run -p 8082:8082 --env-file db.properties -e DB_WALLET_PATH=/app/wallet -v ./Wallet_NOMBRE:/app/wallet:ro ms-foro
+```
+El workflow `.github/workflows/docker-publish.yml` publica la imagen en Docker Hub en cada push a `main` (necesita los secrets `DOCKERHUB_USERNAME` y `DOCKERHUB_TOKEN`).
