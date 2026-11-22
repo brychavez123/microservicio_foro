@@ -1,0 +1,879 @@
+{
+  "info": {
+    "name": "Bralomeo Foro - ms-foro",
+    "description": "Microservicio del foro (puerto 8082, publicado por Nginx en /api/).\n\nSistema de Foros en Línea (DSY2205). Los 3 microservicios Spring Boot corren como contenedores Docker en una EC2 de AWS y Nginx los publica en http://100.27.17.133. Base de datos: Oracle Autonomous DB.\n\nAutenticación HTTP Basic (ya configurada en cada petición):\n- admin@foro.cl / Admin123! (ADMIN)\n- moderador@foro.cl / Modera123! (MODERADOR)\n- sofia@foro.cl / Sofia123! y diego@foro.cl / Diego123! (USUARIO)\n\nSi la EC2 se reinicia, la IP cambia: reemplázala con Ctrl+Shift+F en Postman o en el JSON.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Info del servicio",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://100.27.17.133/api/info",
+          "protocol": "http",
+          "host": [
+            "100",
+            "27",
+            "17",
+            "133"
+          ],
+          "path": [
+            "api",
+            "info"
+          ]
+        },
+        "description": "",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Listar categorías",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://100.27.17.133/api/categorias",
+          "protocol": "http",
+          "host": [
+            "100",
+            "27",
+            "17",
+            "133"
+          ],
+          "path": [
+            "api",
+            "categorias"
+          ]
+        },
+        "description": "",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Obtener categoría",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://100.27.17.133/api/categorias/1",
+          "protocol": "http",
+          "host": [
+            "100",
+            "27",
+            "17",
+            "133"
+          ],
+          "path": [
+            "api",
+            "categorias",
+            "1"
+          ]
+        },
+        "description": "",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Resumen de categorías",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://100.27.17.133/api/categorias/resumen",
+          "protocol": "http",
+          "host": [
+            "100",
+            "27",
+            "17",
+            "133"
+          ],
+          "path": [
+            "api",
+            "categorias",
+            "resumen"
+          ]
+        },
+        "description": "",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Temas de una categoría",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://100.27.17.133/api/categorias/1/temas",
+          "protocol": "http",
+          "host": [
+            "100",
+            "27",
+            "17",
+            "133"
+          ],
+          "path": [
+            "api",
+            "categorias",
+            "1",
+            "temas"
+          ]
+        },
+        "description": "",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Crear categoría (ADMIN)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://100.27.17.133/api/categorias",
+          "protocol": "http",
+          "host": [
+            "100",
+            "27",
+            "17",
+            "133"
+          ],
+          "path": [
+            "api",
+            "categorias"
+          ]
+        },
+        "description": "",
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "username",
+              "value": "admin@foro.cl",
+              "type": "string"
+            },
+            {
+              "key": "password",
+              "value": "Admin123!",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Gastronomía\",\n  \"descripcion\": \"Recetas, restaurantes y datos de cocina\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Modificar categoría (ADMIN)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://100.27.17.133/api/categorias/7",
+          "protocol": "http",
+          "host": [
+            "100",
+            "27",
+            "17",
+            "133"
+          ],
+          "path": [
+            "api",
+            "categorias",
+            "7"
+          ]
+        },
+        "description": "Cambia el id de la URL por el que devolvió la petición de creación.",
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "username",
+              "value": "admin@foro.cl",
+              "type": "string"
+            },
+            {
+              "key": "password",
+              "value": "Admin123!",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Gastronomía y Cocina\",\n  \"descripcion\": \"Recetas, restaurantes y datos de cocina\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Eliminar categoría (ADMIN)",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://100.27.17.133/api/categorias/7",
+          "protocol": "http",
+          "host": [
+            "100",
+            "27",
+            "17",
+            "133"
+          ],
+          "path": [
+            "api",
+            "categorias",
+            "7"
+          ]
+        },
+        "description": "Cambia el id de la URL por el que devolvió la petición de creación.",
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "username",
+              "value": "admin@foro.cl",
+              "type": "string"
+            },
+            {
+              "key": "password",
+              "value": "Admin123!",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Listar temas",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://100.27.17.133/api/temas",
+          "protocol": "http",
+          "host": [
+            "100",
+            "27",
+            "17",
+            "133"
+          ],
+          "path": [
+            "api",
+            "temas"
+          ]
+        },
+        "description": "",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Ver tema",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://100.27.17.133/api/temas/1",
+          "protocol": "http",
+          "host": [
+            "100",
+            "27",
+            "17",
+            "133"
+          ],
+          "path": [
+            "api",
+            "temas",
+            "1"
+          ]
+        },
+        "description": "",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Buscar temas",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://100.27.17.133/api/temas/buscar?q=teclado",
+          "protocol": "http",
+          "host": [
+            "100",
+            "27",
+            "17",
+            "133"
+          ],
+          "path": [
+            "api",
+            "temas",
+            "buscar"
+          ],
+          "query": [
+            {
+              "key": "q",
+              "value": "teclado"
+            }
+          ]
+        },
+        "description": "",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Temas por categoría",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://100.27.17.133/api/temas/categoria/1",
+          "protocol": "http",
+          "host": [
+            "100",
+            "27",
+            "17",
+            "133"
+          ],
+          "path": [
+            "api",
+            "temas",
+            "categoria",
+            "1"
+          ]
+        },
+        "description": "",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Temas de un usuario",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://100.27.17.133/api/temas/usuario/3",
+          "protocol": "http",
+          "host": [
+            "100",
+            "27",
+            "17",
+            "133"
+          ],
+          "path": [
+            "api",
+            "temas",
+            "usuario",
+            "3"
+          ]
+        },
+        "description": "",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Publicar tema",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://100.27.17.133/api/temas",
+          "protocol": "http",
+          "host": [
+            "100",
+            "27",
+            "17",
+            "133"
+          ],
+          "path": [
+            "api",
+            "temas"
+          ]
+        },
+        "description": "El autor se toma del usuario autenticado (sofia).",
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "username",
+              "value": "sofia@foro.cl",
+              "type": "string"
+            },
+            {
+              "key": "password",
+              "value": "Sofia123!",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"titulo\": \"¿Qué lenguaje aprender en 2026?\",\n  \"contenido\": \"Estoy empezando a programar y quiero saber qué lenguaje me recomiendan.\",\n  \"categoriaId\": 1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Publicar tema inválido (400)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://100.27.17.133/api/temas",
+          "protocol": "http",
+          "host": [
+            "100",
+            "27",
+            "17",
+            "133"
+          ],
+          "path": [
+            "api",
+            "temas"
+          ]
+        },
+        "description": "",
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "username",
+              "value": "sofia@foro.cl",
+              "type": "string"
+            },
+            {
+              "key": "password",
+              "value": "Sofia123!",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"titulo\": \"Hola\",\n  \"contenido\": \"corto\",\n  \"categoriaId\": null\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Modificar tema (autor)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://100.27.17.133/api/temas/6",
+          "protocol": "http",
+          "host": [
+            "100",
+            "27",
+            "17",
+            "133"
+          ],
+          "path": [
+            "api",
+            "temas",
+            "6"
+          ]
+        },
+        "description": "Cambia el id de la URL por el que devolvió la petición de creación.",
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "username",
+              "value": "sofia@foro.cl",
+              "type": "string"
+            },
+            {
+              "key": "password",
+              "value": "Sofia123!",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"titulo\": \"¿Qué lenguaje aprender en 2026? (actualizado)\",\n  \"contenido\": \"Estoy empezando a programar: ¿Python, Java o JavaScript?\",\n  \"categoriaId\": 1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Modificar tema de otro usuario (403)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://100.27.17.133/api/temas/1",
+          "protocol": "http",
+          "host": [
+            "100",
+            "27",
+            "17",
+            "133"
+          ],
+          "path": [
+            "api",
+            "temas",
+            "1"
+          ]
+        },
+        "description": "",
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "username",
+              "value": "diego@foro.cl",
+              "type": "string"
+            },
+            {
+              "key": "password",
+              "value": "Diego123!",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"titulo\": \"Intento editar un tema ajeno\",\n  \"contenido\": \"Esto no debería estar permitido para diego.\",\n  \"categoriaId\": 1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Comentarios de un tema",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://100.27.17.133/api/temas/1/comentarios",
+          "protocol": "http",
+          "host": [
+            "100",
+            "27",
+            "17",
+            "133"
+          ],
+          "path": [
+            "api",
+            "temas",
+            "1",
+            "comentarios"
+          ]
+        },
+        "description": "",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Comentar tema",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://100.27.17.133/api/temas/1/comentarios",
+          "protocol": "http",
+          "host": [
+            "100",
+            "27",
+            "17",
+            "133"
+          ],
+          "path": [
+            "api",
+            "temas",
+            "1",
+            "comentarios"
+          ]
+        },
+        "description": "",
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "username",
+              "value": "diego@foro.cl",
+              "type": "string"
+            },
+            {
+              "key": "password",
+              "value": "Diego123!",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"contenido\": \"Yo uso uno con switches marrones y me funciona muy bien.\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Ver comentario",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://100.27.17.133/api/comentarios/1",
+          "protocol": "http",
+          "host": [
+            "100",
+            "27",
+            "17",
+            "133"
+          ],
+          "path": [
+            "api",
+            "comentarios",
+            "1"
+          ]
+        },
+        "description": "",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Modificar comentario (autor)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://100.27.17.133/api/comentarios/7",
+          "protocol": "http",
+          "host": [
+            "100",
+            "27",
+            "17",
+            "133"
+          ],
+          "path": [
+            "api",
+            "comentarios",
+            "7"
+          ]
+        },
+        "description": "Cambia el id de la URL por el que devolvió la petición de creación.",
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "username",
+              "value": "diego@foro.cl",
+              "type": "string"
+            },
+            {
+              "key": "password",
+              "value": "Diego123!",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"contenido\": \"Editado: uso switches marrones, silenciosos y cómodos.\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Eliminar comentario (autor)",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://100.27.17.133/api/comentarios/7",
+          "protocol": "http",
+          "host": [
+            "100",
+            "27",
+            "17",
+            "133"
+          ],
+          "path": [
+            "api",
+            "comentarios",
+            "7"
+          ]
+        },
+        "description": "Cambia el id de la URL por el que devolvió la petición de creación.",
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "username",
+              "value": "diego@foro.cl",
+              "type": "string"
+            },
+            {
+              "key": "password",
+              "value": "Diego123!",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Eliminar tema (autor)",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://100.27.17.133/api/temas/6",
+          "protocol": "http",
+          "host": [
+            "100",
+            "27",
+            "17",
+            "133"
+          ],
+          "path": [
+            "api",
+            "temas",
+            "6"
+          ]
+        },
+        "description": "Cambia el id de la URL por el que devolvió la petición de creación.",
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "username",
+              "value": "sofia@foro.cl",
+              "type": "string"
+            },
+            {
+              "key": "password",
+              "value": "Sofia123!",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
