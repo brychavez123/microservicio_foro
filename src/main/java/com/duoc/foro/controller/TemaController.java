@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.duoc.foro.dto.BaneoRequest;
 import com.duoc.foro.dto.ComentarioRequest;
 import com.duoc.foro.dto.ComentarioResponse;
 import com.duoc.foro.dto.MensajeResponse;
@@ -62,12 +61,6 @@ public class TemaController {
         return ResponseEntity.ok(temaService.listarPorUsuario(usuarioId));
     }
 
-    /** ADMIN / MODERADOR */
-    @GetMapping("/baneados")
-    public ResponseEntity<List<TemaResponse>> baneados() {
-        return ResponseEntity.ok(temaService.listarBaneados());
-    }
-
     /** Usuario autenticado: el autor es quien inicia sesión. */
     @PostMapping
     public ResponseEntity<TemaResponse> crear(@Valid @RequestBody TemaRequest request, Authentication auth) {
@@ -86,19 +79,6 @@ public class TemaController {
     public ResponseEntity<MensajeResponse> eliminar(@PathVariable Long id, Authentication auth) {
         temaService.eliminar(id, auth);
         return ResponseEntity.ok(new MensajeResponse("Tema con id " + id + " eliminado correctamente"));
-    }
-
-    /** ADMIN / MODERADOR */
-    @PutMapping("/{id}/banear")
-    public ResponseEntity<TemaResponse> banear(@PathVariable Long id, @Valid @RequestBody BaneoRequest request,
-            Authentication auth) {
-        return ResponseEntity.ok(temaService.banear(id, request.motivo(), auth));
-    }
-
-    /** ADMIN / MODERADOR */
-    @PutMapping("/{id}/desbanear")
-    public ResponseEntity<TemaResponse> desbanear(@PathVariable Long id, Authentication auth) {
-        return ResponseEntity.ok(temaService.desbanear(id, auth));
     }
 
     /** Público: comentarios activos de un tema. */

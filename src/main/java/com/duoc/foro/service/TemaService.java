@@ -66,11 +66,6 @@ public class TemaService {
         return aRespuestas(temaRepository.buscarPorTexto(texto.trim(), EstadoPublicacion.ACTIVO));
     }
 
-    @Transactional(readOnly = true)
-    public List<TemaResponse> listarBaneados() {
-        return aRespuestas(temaRepository.findByEstadoOrderByFechaCreacionDesc(EstadoPublicacion.BANEADO));
-    }
-
     @Transactional
     public TemaResponse crear(TemaRequest request, Authentication auth) {
         Tema tema = new Tema();
@@ -106,30 +101,6 @@ public class TemaService {
         comentarioRepository.deleteByTemaId(id);
         temaRepository.delete(tema);
         log.info("Tema eliminado: id={} (junto a sus comentarios)", id);
-    }
-
-    @Transactional
-    public TemaResponse banear(Long id, String motivo, Authentication auth) {
-        Tema tema = buscarPorId(id);
-        if (tema.getEstado() == EstadoPublicacion.BANEADO) {
-            throw new ConflictoException("El tema con id " + id + " ya está baneado");
-        }
-        tema.setEstado(EstadoPublicacion.BANEADO);
-        tema.setMotivoBaneo(motivo.trim());
-        log.warn("Tema baneado: id={}, por={}, motivo={}", id, auth.getName(), motivo);
-        return aRespuesta(temaRepository.save(tema));
-    }
-
-    @Transactional
-    public TemaResponse desbanear(Long id, Authentication auth) {
-        Tema tema = buscarPorId(id);
-        if (tema.getEstado() == EstadoPublicacion.ACTIVO) {
-            throw new ConflictoException("El tema con id " + id + " no está baneado");
-        }
-        tema.setEstado(EstadoPublicacion.ACTIVO);
-        tema.setMotivoBaneo(null);
-        log.info("Tema desbaneado: id={}, por={}", id, auth.getName());
-        return aRespuesta(temaRepository.save(tema));
     }
 
     Tema buscarPorId(Long id) {
